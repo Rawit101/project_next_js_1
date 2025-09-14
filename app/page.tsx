@@ -107,8 +107,10 @@ import Navbar from './component/navbar'
 
 export default function Home() {
   return (
-    <div>
-      <Navbar />
-    </div>
+    <main className='bg-white min-h-screen'>
+      <div>
+        <Navbar />
+      </div>
+    </main>
   )
 }
