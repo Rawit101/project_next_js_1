@@ -1,6 +1,6 @@
 import { CartItem } from "./CartItem"
 
 export interface CartSlice {
-    CartItems: CartItem[]
+    cartItems: CartItem[]
     cartOpen: boolean
 }
