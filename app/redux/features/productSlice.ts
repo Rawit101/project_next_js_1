@@ -1,12 +1,15 @@
+import { Category } from "@/app/models/Category"
+import { Product } from "@/app/models/Product"
+import { ProductSlice } from "@/app/models/ProductSlice"
 import { createSlice, PayloadAction } from "@reduxjs/toolkit"
 
 
-const initialState: ProductSlice {
+const initialState: ProductSlice = {
     allProducts: [],
     categories: [],
     newProducts: [],
     featuredProducts: [],
-    wishlist: [],
+    wishList: [],
 }
 
 export const productSlice = createSlice({
@@ -20,10 +23,10 @@ export const productSlice = createSlice({
             return { ...state, featuredProducts: action.payload }
         },
         addToWishlist: (state, action: PayloadAction<Product>) => {
-            const { wishlist } = state
-            if (wishlist.findIndex((item) => item.id === action.payload.id) === -1) {
-                const updatedList = [...state.wishlist, action.payload]
-                return { ...state, wishlist: updatedList }
+            const { wishList } = state
+            if (wishList.findIndex((item) => item.id === action.payload.id) === -1) {
+                const updatedList = [...state.wishList, action.payload]
+                return { ...state, wishList: updatedList }
             }
         },
         addCategories: (state, action: PayloadAction<Category[]>) => {
