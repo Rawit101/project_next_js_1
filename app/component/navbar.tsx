@@ -1,17 +1,23 @@
-import { useActionState } from "react"
+'use client'
+
+
+import { FC } from "react"
+import { AiOutlineShoppingCart } from "react-icons/ai"
 import { BsSearch } from "react-icons/bs"
 import { useAppDispatch, useAppSelector } from "../redux/hooks"
-import useAuth from "../hooks/ีuseAuth"
 import { setCartState } from "../redux/features/cartSlice"
-import Link from "next/link"
 import { updateModel } from "../redux/features/authSlice"
+import Link from 'next/link'
+import useAuth from "../hooks/ีuseAuth"
+import { FaUser } from "react-icons/fa"
+import CustomPopup from "./CustomPopup"
+import { updateDarkMode } from "../redux/features/homeSlice"
 import { MdOutlineDarkMode, MdOutlineLightMode } from "react-icons/md"
 
-
-function Navbar() {
+const Navbar: FC = () => {
     const dispatch = useAppDispatch()
-    const cardCount = useAppSelector(
-        (state) => state.cartReducer.cartItem.length
+    const cartCount = useAppSelector(
+        (state) => state.cartReducer.cartItems.length
     )
     const username = useAppSelector((state) => state.authReducer.username)
     const isDarkMode = useAppSelector((state) => state.homeReducer.isDarkMode)
@@ -19,82 +25,84 @@ function Navbar() {
 
     const showCart = () => {
         requireAuth(() => dispatch(setCartState(true)))
-        // Additional logic for showing the cart can be added here
     }
 
     return (
-        <div className={"py-4 bg-white dark:bg-gray-800 top-0 sticky z-10 shadow-lg font-karla"}>
-            <div className="container mx-auto px-4 flex justify-between items-center">
+        <div className="py-4 bg-white dark:bg-slate-800 top-0 sticky z-10 shadow-lg font-karla">
+            <div className="container mx-auto px-4">
                 <div className="flex justify-between items-center">
                     <Link
                         href="/"
                         className="text-4xl font-bold dark:text-white"
-                        data-testid="main-logo"
+                        data-test="main-logo"
                     >
                         Shopify
                     </Link>
                     <div className="lg:flex hidden w-full max-w-[500px]">
-                        <input type="text"
-                            placeholder="Search products..."
+                        <input
+                            type="text"
+                            placeholder="Search for a product..."
                             className="border-2 border-blue-500 px-6 py-2 w-full dark:text-white dark:bg-slate-800"
                         />
-                        <div className="bg-blue-500 text-white text-[26px] grid place-item-center px-4">
+                        <div className="bg-blue-500 text-white text-[26px] grid place-items-center px-4">
                             <BsSearch />
                         </div>
                     </div>
-                    <div className="flex gap-4 md:gap-8 item-center dark:text-white">
+                    <div className="flex gap-4 md:gap-8 items-center dark:text-white">
                         <Link
                             href="/products"
                             className="text-xl font-bold"
-                            data-test="link-products"
+                            data-test="main-products"
                         >
                             Products
                         </Link>
                         <Link
                             href="/categories"
                             className="text-xl font-bold"
-                            data-test="link-categories"
+                            data-test="main-categories"
                         >
                             Categories
                         </Link>
                         <div className="flex items-center gap-2">
                             {username !== "" ? (
-                                <img src="/path/to/user/avatar.jpg"
-                                    alt="User Avatar"
+                                <img
+                                    src="https://robohash.org/Terry.png?set=set4"
+                                    alt="avatar"
                                     className="w-6"
                                 />
                             ) : (
-                                <FaUser className="text-gray-50 text-2xl dark:text-white" />
+                                <FaUser className="text-gray-500 text-2xl dark:text-white" />
                             )}
                             <div className="text-gray-500 text-2xl">
                                 {username !== "" ? (
-                                    <customPopup />
-
+                                    <CustomPopup />
                                 ) : (
                                     <span
                                         className="cursor-pointer hover:opacity-85 dark:text-white"
                                         onClick={() => dispatch(updateModel(true))}
+                                        data-test="login-btn"
                                     >
                                         Login
                                     </span>
                                 )}
                             </div>
                         </div>
-                        <div className="text-gray-500 text-[32px] relative hover:cursor-pointer hover:opacity-80"
+                        <div
+                            className="text-gray-500 text-[32px] relative hover:cursor-pointer hover:opacity-80"
                             onClick={showCart}
-                            data-testid="cart-btn"
+                            data-test="cart-btn"
                         >
-                            <AiOutlineShoppingcart className="dark:text-white" />
+                            <AiOutlineShoppingCart className="dark:text-white" />
                             <div
                                 className="absolute top-[-15px] right-[-10px] bg-red-600 w-[25px] h-[25px] rounded-full text-white text-[14px] grid place-items-center"
                                 data-test="cart-item-count"
                             >
-                                {cardCount}
+                                {cartCount}
                             </div>
                         </div>
                         <div
                             onClick={() => {
-                                dispatch(updateModel(!isDarkMode))
+                                dispatch(updateDarkMode(!isDarkMode))
                                 document.body.classList.toggle("dark")
                             }}
                         >
@@ -103,13 +111,12 @@ function Navbar() {
                             ) : (
                                 <MdOutlineDarkMode className="cursor-pointer" size={30} />
                             )}
-                        </div>;
-                    </div>;
-                </div>;
-            </div>;
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     )
-};
+}
 
 export default Navbar
-

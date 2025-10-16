@@ -1,5 +1,8 @@
+'use client'
 import React, { useState, useEffect } from "react"
 import { IoIosArrowUp } from "react-icons/io"
+
+
 
 const ScrollToTopButton: React.FC = () => {
     const [isVisible, setIsVisible] = useState(false)

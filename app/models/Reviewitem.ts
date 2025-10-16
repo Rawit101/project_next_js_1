@@ -1,5 +1,5 @@
 export interface ReviewItem {
-    name: string
+    username: string
     rating: number
     review: string
 }

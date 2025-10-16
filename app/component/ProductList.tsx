@@ -1,3 +1,4 @@
+'use client'
 import { FC } from "react"
 import { Product } from "../models/Product"
 import ProductCard from "./ProductCard"

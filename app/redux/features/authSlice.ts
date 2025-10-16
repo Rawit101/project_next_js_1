@@ -1,21 +1,20 @@
-import { AuthSlice } from "@/app/models/AuthSlice"
 import { createSlice, PayloadAction } from "@reduxjs/toolkit"
-import { create } from "domain"
-import { stat } from "fs"
+import { AuthSlice } from "../../models/AuthSlice"
 
-interface loginProps {
+interface LoginProps {
     username: string
     password: string
 }
 
 const initialState: AuthSlice = {
-    isLoggedIn:
+    isLoggedIn: typeof window !== "undefined" &&
         localStorage.getItem("username") !== null &&
         localStorage.getItem("username") !== undefined &&
         localStorage.getItem("username") !== "",
     modelOpen: false,
-    username: localStorage.getItem("username") ?? "",
+    username: ""
 }
+
 
 export const authSlice = createSlice({
     name: "authSlice",
@@ -24,16 +23,15 @@ export const authSlice = createSlice({
         updateModel: (state, action: PayloadAction<boolean>) => {
             return { ...state, modelOpen: action.payload }
         },
-
-        doLogin: (state, action: PayloadAction<loginProps>) => {
+        doLogin: (state, action: PayloadAction<LoginProps>) => {
             if (
-                action.payload.username === "admin" &&
-                action.payload.password === "Passw0rd"
+                action.payload.username === "atuny0" &&
+                action.payload.password === "9uQFF1Lh"
             ) {
-                localStorage.setItem("username", "admin")
+                localStorage.setItem("username", "atuny0")
                 return {
                     ...state,
-                    username: "admin",
+                    username: "atuny0",
                     modalOpen: false,
                     isLoggedIn: true,
                 }
@@ -41,12 +39,12 @@ export const authSlice = createSlice({
                 return state
             }
         },
-        doLogOut: (state) => {
+        doLogout: (state) => {
             localStorage.removeItem("username")
             return { ...state, username: "", isLoggedIn: false }
         },
     },
 })
 
-export const { updateModel, doLogin, doLogOut } = authSlice.actions
+export const { updateModel, doLogin, doLogout } = authSlice.actions
 export default authSlice.reducer
