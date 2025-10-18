@@ -1,12 +1,23 @@
+// app/component/ProtectedRoute.tsx
 'use client'
 
-import { FC } from "react"
-import { Outlet, Navigate } from "react-router-dom"
-import { useAppSelector } from "../redux/hooks"
+import { useEffect } from 'react'
+import { useRouter } from 'next/navigation'
+import { useAppSelector } from '../redux/hooks'
 
-const ProtectedRoute: FC = () => {
-    const isLoggedin = useAppSelector((state) => state.authReducer.isLoggedIn)
-    return isLoggedin ? <Outlet /> : <Navigate to="/" />
+export default function ProtectedRoute({ children }: { children: React.ReactNode }) {
+    const router = useRouter()
+    const isAuthenticated = useAppSelector(state => state.auth?.isAuthenticated) // ปรับตาม state ของคุณ
+
+    useEffect(() => {
+        if (!isAuthenticated) {
+            router.push('/') // redirect ไปหน้า home ถ้าไม่ได้ login
+        }
+    }, [isAuthenticated, router])
+
+    if (!isAuthenticated) {
+        return null // หรือแสดง loading
+    }
+
+    return <>{children}</>
 }
-
-export default ProtectedRoute
